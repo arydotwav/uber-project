@@ -6,7 +6,7 @@ class AddressList:
 
     def check_address(self, address):
         if address in self.list:
-            return f"address {address}  in list. selected for trip.\n"
+            return address
         else:
             print(f"{address} not in saved list.")
             option = int(input("would you like to add this address to your saved list?\n1 - YES\n2 - NO\nOption: "))
