@@ -1,8 +1,7 @@
-
 class AddressList:
     def __init__(self):
         self.list = [
-            "emperanza 1061",
+            "avenida 1061",
             "hola que tal 1010"
         ]
 
@@ -18,7 +17,8 @@ class AddressList:
             else:
                 return(f"{address} not saved. still selected for trip")
            
-        
+    def get_all_addresses(self):
+        return self.list
         
     def __str__(self):
         return f"YOUR ADDRESSES: {', '.join(self.list)}"
