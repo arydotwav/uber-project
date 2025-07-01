@@ -3,7 +3,7 @@ import time
 
 class TripManager:
     def __init__(self):
-        self.available_drivers = ["Varus","Valmar","Kai"]
+        self.available_drivers = ["Varus","Valmar","Kai", "Gwen", "Akali"]
 
     def confirm_trip(self):
         print("Finding a driver...")
