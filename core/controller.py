@@ -19,5 +19,5 @@ class Controller:
     def confirm_trip(self):
         return self.trip_manager.confirm_trip() 
     
-controller1 = Controller()
-print(controller1.confirm_trip())
+    def find_trip(self):
+        return self.trip_manager.find_trip()
