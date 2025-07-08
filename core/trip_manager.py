@@ -12,6 +12,7 @@ class TripManager:
         self.available_drivers = self.auth.drivers
         self.available_trips = self.auth.passengers
 
+
     def confirm_trip(self):
         print("Finding a driver...")
         while True:
@@ -24,15 +25,20 @@ class TripManager:
                 print("The driver rejected the trip.")
 
     def find_trip(self):
-        while True:
-            time.sleep(1)
-            passenger = self.find_passenger()
-            if passenger:
-                print("Searching for a trip..")
-                time.sleep(1)
-                return f"Trip confirmed for {passenger.name} ({passenger.telephone})"
-            else:
-                print("No trips available.")
+        print("🔄 Waiting for passengers...")
+        try:
+            while True:
+                passenger = self.find_passenger()
+                if passenger:
+                    print(f"✅ Trip confirmed for {passenger.name} ({passenger.email})")
+                    return passenger
+                else:
+                    print("⏳ No trips yet. Waiting...")
+                    time.sleep(2)
+        except KeyboardInterrupt:
+            print("❌ Search cancelled by user.")
+            return None
+
             
     def find_driver(self):
         return random.choice(self.available_drivers)

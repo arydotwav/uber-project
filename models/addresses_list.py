@@ -1,11 +1,12 @@
+from typing import List, Union
 class AddressList:
     def __init__(self):
-        self.list = [
+        self.list: list[str] = [
             "avenida 1061",
             "hola que tal 1010"
         ]
 
-    def check_address(self, address):
+    def check_address(self, address: str) -> Union[str, None]:
         if address in self.list:
             return address
         else:
@@ -17,10 +18,10 @@ class AddressList:
             else:
                 return(f"{address} not saved. still selected for trip")
            
-    def get_all_addresses(self):
+    def get_all_addresses(self) -> List[str]:
         return self.list
         
-    def __str__(self):
+    def __str__(self) -> str:
         return f"YOUR ADDRESSES: {', '.join(self.list)}"
         
     

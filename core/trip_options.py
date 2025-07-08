@@ -6,12 +6,12 @@ from models.addresses_list import AddressList
 
 class TripOptions:
     def __init__(self):
-        self.address_list = AddressList()
+        self.address_list: AddressList = AddressList()
 
     def get_addresses(self):
         addresses = self.address_list.get_all_addresses()
         if addresses:
-            return addresses
+            return addresses()
         else:
             return "message_no_addreses"
 
