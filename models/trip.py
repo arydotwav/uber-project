@@ -1,8 +1,8 @@
 class Trip:
-    def __init__(self, pickup, dropoff, address_book, passanger, driver, price):
+    def __init__(self, pickup, dropoff, address_book, passenger, driver, price):
         self.pickup = pickup
         self.dropoff = dropoff
-        self.passanger = passanger
+        self.passenger = passenger
         self.driver = driver
         self.address_book = address_book
         self.price = price

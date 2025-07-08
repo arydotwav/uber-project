@@ -8,7 +8,7 @@ class User:
     def __str__(self):
         return f"{self.name} | {self.telephone} | {self.email}"
 
-class Passanger(User):
+class Passenger(User):
     def __init__(self, name, telephone, email, address_list=None):
         super().__init__(name, telephone, email)
         self.addresses = address_list if address_list else AddressList()
@@ -30,6 +30,6 @@ class Driver(User):
     def __str__(self):
         return f"{super().__str__()} | {self.return_status()}"
     
-# passanger1 = Passanger("ariana", 1136608460, "arianarz268@gmail.com")
+# passenger1 = passenger("ariana", 1136608460, "arianarz268@gmail.com")
 # driver1 = Driver("ariana", 1136608460, "arianarz268@gmail.com", False)
 # print(driver1)

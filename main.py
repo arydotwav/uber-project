@@ -2,6 +2,7 @@ from ui.trip_ui import TripUi
 
 def main():
    ui = TripUi()
+   ui.start_trip()
 
 if __name__ == "__main__":
     main()
