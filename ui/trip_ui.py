@@ -50,7 +50,7 @@ class TripUi():
     
     def follow_up(self):
 
-        self.follow_up.show_info()
+        self.follow.show_info()
 
 
 
