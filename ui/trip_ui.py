@@ -79,3 +79,20 @@ class TripUi(Controller):
     def start_trip(self):
         self.welcome()
         self.login() 
+    
+    def follow_up(self):
+
+        self.follow.show_info()
+
+
+
+trip = TripUi()
+
+#print(trip.welcome())
+
+print(trip.show_drivers())
+
+print(trip.show_driver_info())
+
+print(trip.follow_up())
+
