@@ -40,7 +40,7 @@ class AuthManager:
                     return False
 
         print("🆕 User not found. Let's register you.")
-        role = input("Are you a 'driver' or 'passenger'? ").strip().lower()
+        role = input("Are you a 'driver' or 'passenger'? ").strip().lower()    # TODO: Error handling
         email = input("Enter your email: ")
         if role == "passenger":
             address_list = AddressList()
@@ -64,6 +64,9 @@ class AuthManager:
             print("⚠️ No user is currently logged in.")
 
     def get_current_user(self) -> Optional[Union[Driver, Passenger]]:
+        # Logs
+        print(f"Logged in as {self.logged_user.name}")
+        print(self.logged_user)
         return self.logged_user
 
     def get_active_drivers(self) -> List[Driver]:

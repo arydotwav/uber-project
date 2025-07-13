@@ -20,7 +20,8 @@ class TripManager:
             driver = self.find_driver()
             if driver.status:
                 print(f"The driver {driver} is accepting the trip..")
-                return f"Trip confirmed with {driver}"
+                print(f"Trip confirmed with {driver}")
+                return driver
             else:
                 print("The driver rejected the trip.")
 

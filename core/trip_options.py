@@ -17,7 +17,7 @@ class TripOptions:
 
     def get_price_options(self):
         return {
-            "Ecomy": 3500,
+            "Economy": 3500,
             "Fast": 6500,
             "Confort": 12000
         }
