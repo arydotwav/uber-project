@@ -18,7 +18,7 @@ class AddressList:
                 self.list.append(address)
                 return f"address {address} saved. selected for trip."
             else:
-                return(f"{address} not saved. still selected for trip")
+                return(f"{address} not saved. Still selected for trip.")
            
     def get_all_addresses(self) -> List[str]:
         return self.list

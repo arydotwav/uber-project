@@ -38,9 +38,11 @@ class TripUi(Controller):
             show_as_active = input("(Driver) Do you want to show as active? (y/n): ").lower()
             if show_as_active == 'y':
                 self.user.status = True
-                passenger = self.find_trip()
-                if passenger:
-                    print(f"You have a trip with passenger: {passenger.name} ({passenger.email})")
+                trip = self.find_trip(self.user)
+                if trip:
+                    print(f"You have a trip with passenger: {trip.passenger.name} ({trip.passenger.email})")
+                    print(f"Pickup: {trip.pickup}")
+                    print(f"Dropoff: {trip.dropoff}")
                     print("You are 5 minutes from your destination")
                     time.sleep(1)
                     print("You are 2 minutes from your destination")
@@ -87,7 +89,7 @@ class TripUi(Controller):
 
         price_choice = int(input("Choose a price option: "))
         selected_price = list(prices.values())[price_choice - 1]
-
+        print(f"Selected price: ${selected_price}")
         trip = Trip(pickup=pickup_address, dropoff=dropoff_address, address_book=self.trip_options.address_list, passenger=self.user, driver=None, price=selected_price)
         confirmed_trip = self.confirm_trip(trip)
 

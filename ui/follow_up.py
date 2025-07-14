@@ -16,9 +16,9 @@ class FollowUp:
         time.sleep(1)
         print("Llegaras al destino en 5 minutos")
         time.sleep(2)
-        print("Llegaras al destino en 3 minutos")
+        print("You will arrive at your destination in 3 minutes")
         time.sleep(1)
-        print("El viaje se ha completado exitosamente")
+        print("The trip has been completed successfully")
         time.sleep(1)
         self.calificate()
         return None

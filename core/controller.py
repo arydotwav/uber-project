@@ -7,7 +7,7 @@ from ..models.trip import Trip
 class Controller:
     def __init__(self, auth_manager: AuthManager):
         self.trip_options = TripOptions()
-        self.trip_manager = TripManager(auth_manager, trip= None)
+        self.trip_manager = TripManager(auth_manager)
 
     def get_addresses(self):
         return self.trip_options.get_addresses()
@@ -18,5 +18,5 @@ class Controller:
     def confirm_trip(self, trip: Trip):
         return self.trip_manager.confirm_trip(trip)
 
-    def find_trip(self):
-        return self.trip_manager.find_trip()
+    def find_trip(self, driver):
+        return self.trip_manager.find_trip(driver)
