@@ -9,7 +9,7 @@ class AuthManager:
             Passenger("bob", "5678", "bob@example.com"),
         ]
         self.drivers = [
-            Driver("draven", "5678", "draven@example.com", False),
+            Driver("draven", "5678", "draven@example.com", True),
             Driver("manaos", "12345", "manaos@example.com", True)
         ]
         self.logged_user = None

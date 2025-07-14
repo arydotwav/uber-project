@@ -66,7 +66,16 @@ class TripUi(Controller):
             print(f"{i+1}. {address}")
         print(f"{len(addresses) + 1}. Enter a new address")
 
-        address_choice = int(input("Choose a pickup address: "))
+        while True:
+            try:
+                address_choice = int(input("Choose a pickup address: "))
+                if 1 <= address_choice <= len(addresses) + 1:
+                    break
+                else:
+                    print("❌ Invalid choice. Please enter a number within the given range.")
+            except ValueError:
+                print("❌ Invalid input. Please enter a number.")
+        
         if address_choice == len(addresses) + 1:
             new_address = input("Enter the new address: ")
             self.trip_options.address_list.check_address(new_address)
@@ -74,13 +83,25 @@ class TripUi(Controller):
         else:
             pickup_address = addresses[address_choice - 1]
 
-        address_choice = int(input("Choose a dropoff address: "))
-        if address_choice == len(addresses) + 1:
-            new_address = input("Enter the new address: ")
-            self.trip_options.address_list.check_address(new_address)
-            dropoff_address = new_address
-        else:
-            dropoff_address = addresses[address_choice - 1]
+        while True:
+            try:
+                address_choice = int(input("Choose a dropoff address: "))
+                if 1 <= address_choice <= len(addresses) + 1:
+                    if address_choice == len(addresses) + 1:
+                        new_address = input("Enter the new address: ")
+                        dropoff_address = new_address
+                    else:
+                        dropoff_address = addresses[address_choice - 1]
+
+                    if dropoff_address == pickup_address:
+                        print("❌ Dropoff address cannot be the same as pickup address. Please choose a different one.")
+                    else:
+                        self.trip_options.address_list.check_address(dropoff_address)
+                        break
+                else:
+                    print("❌ Invalid choice. Please enter a number within the given range.")
+            except ValueError:
+                print("❌ Invalid input. Please enter a number.")
 
         print("Price options:")
         prices = self.get_price_options()

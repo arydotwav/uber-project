@@ -12,9 +12,9 @@ class FollowUp:
         self.calification : int = None
 
     def show_info(self):
-        print(f"Se ha confirmado el viaje con el conductor {self.driver.name}")
+        print(f"Trip confirmed with {self.driver.name}")
         time.sleep(1)
-        print("Llegaras al destino en 5 minutos")
+        print("You will arrive at your destination in 5 minutes")
         time.sleep(2)
         print("You will arrive at your destination in 3 minutes")
         time.sleep(1)

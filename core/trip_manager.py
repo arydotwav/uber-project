@@ -18,8 +18,6 @@ class TripManager:
             time.sleep(1)
             print("⏳ Waiting for a driver...")
             trip.driver = self.auth.drivers[random.randint(0, len(self.auth.drivers)-1)]
-        
-        print(f"Trip confirmed with {trip.driver}")
         return trip
 
     def find_trip(self, driver: Driver):
