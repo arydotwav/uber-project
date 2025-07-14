@@ -7,7 +7,7 @@ class TripOptions:
     def get_addresses(self):
         addresses = self.address_list.get_all_addresses()
         if addresses:
-            return addresses()
+            return addresses
         else:
             return "message_no_addreses"
 

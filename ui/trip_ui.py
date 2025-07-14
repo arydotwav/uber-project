@@ -6,17 +6,13 @@ from .follow_up import FollowUp
 from ..auth.user import Driver, Passenger
 from ..core.controller import Controller
 from ..auth.auth_manager import AuthManager
+from ..models.trip import Trip
 
 
 class TripUi(Controller):
-
-    
     def __init__(self, auth_manager: AuthManager):
-
-        self.username = None
+        super().__init__(auth_manager)
         self.auth = auth_manager
-        self.tm = TripManager(auth_manager)
-        self.active_driver = ""
         self.follow: FollowUp = None
         
     def welcome(self):
@@ -26,89 +22,99 @@ class TripUi(Controller):
 
     
     def login(self):
-        success = False
-        username = input("Username: ")
-        new_trip = 'y'
-    
-        while new_trip == 'y':
-            if success == False:
-                password = input("Phone (used as password): ")
-            success = self.auth.login(username, password)
+        while True:
+            username = input("Username: ")
+            password = input("Phone (used as password): ")
 
-
-            if success:
+            if self.auth.login(username, password):
                 self.user = self.auth.get_current_user()
-
-                if isinstance(self.user, Passenger):
-                    driver = self.tm.confirm_trip()
-                    self.follow = FollowUp(driver=driver)
-                    self.follow.show_info()
-                elif isinstance(self.user, Driver):
-                    show = input("(Driver) Do you want to show as active?\n(y/n): ")
-                    if show.lower() == "y":
-                        # Integrate this in follow_up class
-                        self.user.status = True
-                        passenger = self.tm.find_trip()
-                        if passenger:
-                            print(f"You have a trip with passenger: {passenger.name} ({passenger.email})")
-                            print("You are 5 minutes to your destination")
-                            time.sleep(1)
-                            print("Your are 2 minutes to your destination")
-                            time.sleep(1)
-                            print(f"You are at your destination")
-                            input("Press Enter to complete the trip...")
-                            print("Trip completed.")
-                        else:
-                            print("No passenger found at this time.")
-                    else:
-                        print("You will stay as inactive.")
-
-                option = input("Do you want to logout? (y/n): ").lower()
-                if option == 'y':
-                    self.auth.logout()
-                    new_trip = 'no'
-                elif option == 'n':
-                    print("You will stay logged in.")
-                    new_trip = input("Do you want to take another trip? (y/n)").lower()
-                    
+                print(f"✅ Welcome, {self.user.name}!")
+                break
             else:
-                print("❌ Login failed. Try again.\n")
+                print("❌ Login failed. Please try again.")
+
+    def _driver_flow(self):
+        while True:
+            show_as_active = input("(Driver) Do you want to show as active? (y/n): ").lower()
+            if show_as_active == 'y':
+                self.user.status = True
+                passenger = self.find_trip()
+                if passenger:
+                    print(f"You have a trip with passenger: {passenger.name} ({passenger.email})")
+                    print("You are 5 minutes from your destination")
+                    time.sleep(1)
+                    print("You are 2 minutes from your destination")
+                    time.sleep(1)
+                    print("You are at your destination")
+                    input("Press Enter to complete the trip...")
+                    print("Trip completed.")
+                else:
+                    print("No passenger found at this time.")
+            else:
+                print("You will remain inactive.")
+                break
 
 
-        print("Closing the app.")
     
-    # def trip_confirmed(self):
-    #     print("To do")
+
+    def _passenger_flow(self):
+        print("Your addresses:")
+        addresses = self.get_addresses()
+        for i, address in enumerate(addresses):
+            print(f"{i+1}. {address}")
+        print(f"{len(addresses) + 1}. Enter a new address")
+
+        address_choice = int(input("Choose a pickup address: "))
+        if address_choice == len(addresses) + 1:
+            new_address = input("Enter the new address: ")
+            self.trip_options.address_list.check_address(new_address)
+            pickup_address = new_address
+        else:
+            pickup_address = addresses[address_choice - 1]
+
+        address_choice = int(input("Choose a dropoff address: "))
+        if address_choice == len(addresses) + 1:
+            new_address = input("Enter the new address: ")
+            self.trip_options.address_list.check_address(new_address)
+            dropoff_address = new_address
+        else:
+            dropoff_address = addresses[address_choice - 1]
+
+        print("Price options:")
+        prices = self.get_price_options()
+        for i, (option, price) in enumerate(prices.items()):
+            print(f"{i+1}. {option}: ${price}")
+
+        price_choice = int(input("Choose a price option: "))
+        selected_price = list(prices.values())[price_choice - 1]
+
+        trip = Trip(pickup=pickup_address, dropoff=dropoff_address, address_book=self.trip_options.address_list, passenger=self.user, driver=None, price=selected_price)
+        confirmed_trip = self.confirm_trip(trip)
+
+        if confirmed_trip:
+            self.follow = FollowUp(driver=confirmed_trip.driver)
+            self.follow.show_info()
+
 
     def start_trip(self):
         self.welcome()
-        self.login() 
+        self.login()
 
-    # def show_driver_info(self):
-    #     driver = Driver("Dardo", "1122668790", "dardito@mail.com", True)
-    #     return f"""
-    #     -----
-    #     Informacion del conductor
-    #     Nombre: {driver.name}
-    #     Patente: {random.randint(1000,9000)}
-    #     -----
-    #     """
-    
-    # def follow_up(self):
+        while True:
+            if isinstance(self.user, Passenger):
+                self._passenger_flow()
+            elif isinstance(self.user, Driver):
+                self._driver_flow()
 
-    #     self.follow.show_info()
+            logout_option = input("Do you want to logout? (y/n): ").lower()
+            if logout_option == 'y':
+                self.auth.logout()
+                print("Closing the app.")
+                break
+            else: 
+                print("You will stay logged in.")
+                another_session = input("Do you want to search for a new trip? (y/n): ").lower()
+                if another_session != 'y':
+                    print("Closing the app.")
+                    break 
 
-    # def show_drivers(self):
-    #     self.active_driver = self.tm.find_driver() or "No se encontro un conductor"
-    #     return f"Conductores disponibles: {self.active_driver}"
-
-
-# trip = TripUi()
-
-# #print(trip.welcome())
-
-# print(trip.show_drivers())
-
-# print(trip.show_driver_info())
-
-# print(trip.follow_up())

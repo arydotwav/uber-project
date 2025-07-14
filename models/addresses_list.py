@@ -3,7 +3,9 @@ class AddressList:
     def __init__(self):
         self.list: list[str] = [
             "avenida 1061",
-            "hola que tal 1010"
+            "hola que tal 1010",
+            "Av. Calle Real 2631",
+            "Av. San Martín 102"
         ]
 
     def check_address(self, address: str) -> Union[str, None]:

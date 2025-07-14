@@ -2,20 +2,28 @@ import random
 import time
 from ..auth.auth_manager import AuthManager
 
+from ..models.trip import Trip
+
 class TripManager:
-    def __init__(self, auth_manager: AuthManager):
+    def __init__(self, auth_manager: AuthManager, trip: Trip):
         self.auth = auth_manager
+        #self.pending_trips: list[Trip] = []
+        self.trip = trip
 
 
-    def confirm_trip(self):
-        print("Finding a driver...")
+    def confirm_trip(self, trip):
+        self.trip = trip
+        
+        print(f"Finding a driver for your trip to {self.trip.dropoff}...")
+        
         while True:
             time.sleep(1)  
             driver = self.find_driver()
             if driver.status:
                 print(f"The driver {driver} is accepting the trip..")
                 print(f"Trip confirmed with {driver}")
-                return driver
+                self.trip.driver = driver
+                return self.trip
             else:
                 print("The driver rejected the trip.")
 

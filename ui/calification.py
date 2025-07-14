@@ -28,5 +28,7 @@ class Calification:
 
         print(f"Trip successfully rated with {self.calification} stars")
 
+        return self.calification
+
     
         
