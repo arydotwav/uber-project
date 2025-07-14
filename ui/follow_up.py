@@ -1,7 +1,7 @@
 import time
 
-from auth.user import Driver, Passenger
-from ui.calification import Calification
+from ..auth.user import Driver, Passenger
+from .calification import Calification
 
 
 class FollowUp:

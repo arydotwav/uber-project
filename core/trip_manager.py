@@ -1,16 +1,10 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import random
 import time
-from auth.auth_manager import AuthManager
+from ..auth.auth_manager import AuthManager
 
 class TripManager:
-    def __init__(self):
-        self.auth = AuthManager()
-        self.available_drivers = self.auth.drivers
-        self.available_trips = self.auth.passengers
+    def __init__(self, auth_manager: AuthManager):
+        self.auth = auth_manager
 
 
     def confirm_trip(self):
@@ -42,10 +36,12 @@ class TripManager:
 
             
     def find_driver(self):
-        return random.choice(self.available_drivers)
+        return random.choice(self.auth.get_active_drivers())
 
     def find_passenger(self):
-        return random.choice(self.available_trips)
+        if not self.auth.passengers:
+            return None
+        return random.choice(self.auth.passengers)
 
 # trip1 = TripManager()
 # print(trip1.find_trip())

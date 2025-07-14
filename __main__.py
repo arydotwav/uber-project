@@ -1,7 +1,9 @@
-from ui.trip_ui import TripUi
+from .ui.trip_ui import TripUi
+from .auth.auth_manager import AuthManager
 
 def main():
-   ui = TripUi()
+   auth_manager = AuthManager()
+   ui = TripUi(auth_manager)
    ui.start_trip()
 
 if __name__ == "__main__":

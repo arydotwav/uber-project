@@ -1,4 +1,4 @@
-from models.addresses_list import AddressList
+from ..models.addresses_list import AddressList
 class User:
     def __init__(self, name, telephone, email):
         self.name = name

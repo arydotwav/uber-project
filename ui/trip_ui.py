@@ -1,23 +1,21 @@
 import time
-import sys
-import os
 import random
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from ..core.trip_manager import TripManager
+from .follow_up import FollowUp
+from ..auth.user import Driver, Passenger
+from ..core.controller import Controller
+from ..auth.auth_manager import AuthManager
 
-from core.trip_manager import TripManager
-from ui.follow_up import FollowUp
-from auth.user import Driver, Passenger
-from core.controller import Controller
-from auth.auth_manager import AuthManager
 
 class TripUi(Controller):
 
     
-    def __init__(self):
+    def __init__(self, auth_manager: AuthManager):
 
         self.username = None
-        self.tm = TripManager()
+        self.auth = auth_manager
+        self.tm = TripManager(auth_manager)
         self.active_driver = ""
         self.follow: FollowUp = None
         
@@ -28,7 +26,6 @@ class TripUi(Controller):
 
     
     def login(self):
-        auth = AuthManager()
         success = False
         username = input("Username: ")
         new_trip = 'y'
@@ -36,11 +33,11 @@ class TripUi(Controller):
         while new_trip == 'y':
             if success == False:
                 password = input("Phone (used as password): ")
-            success = auth.login(username, password)
+            success = self.auth.login(username, password)
 
 
             if success:
-                self.user = auth.get_current_user()
+                self.user = self.auth.get_current_user()
 
                 if isinstance(self.user, Passenger):
                     driver = self.tm.confirm_trip()
@@ -58,7 +55,7 @@ class TripUi(Controller):
 
                 option = input("Do you want to logout? (y/n): ").lower()
                 if option == 'y':
-                    auth.logout()
+                    self.auth.logout()
                     new_trip = 'no'
                 elif option == 'n':
                     print("You will stay logged in.")

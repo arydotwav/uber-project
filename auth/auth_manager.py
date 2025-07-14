@@ -1,10 +1,7 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from auth.user import Passenger, Driver
-from models.addresses_list import AddressList  
+from ..models.addresses_list import AddressList
+from .user import Passenger, Driver
 from typing import Optional, List, Union
+import re
 class AuthManager:
     def __init__(self):
         self.passengers: List[Passenger] = [
@@ -40,13 +37,27 @@ class AuthManager:
                     return False
 
         print("🆕 User not found. Let's register you.")
-        role = input("Are you a 'driver' or 'passenger'? ").strip().lower()    # TODO: Error handling
-        email = input("Enter your email: ")
+        while True:
+            role = input("Are you a 'driver' or 'passenger'? ").strip().lower()
+            if role in ["driver", "passenger"]:
+                break
+            else:
+                print("Invalid role. Please enter 'driver' or 'passenger'.")
+        
+
+        email_regex = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        while True:
+            email = input("Enter your email: ")
+            if re.match(email_regex, email):
+                break
+            else:
+                print("Invalid email format. Please enter a valid email address.")
+
         if role == "passenger":
             address_list = AddressList()
             new_user = Passenger(name, password, email, address_list)
             self.passengers.append(new_user)
-        else:
+        elif role == "driver":
             new_user = Driver(name, password, email, False)
             self.drivers.append(new_user)
 

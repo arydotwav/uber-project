@@ -1,9 +1,5 @@
-import sys
-import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from core.trip_options import TripOptions
-from core.trip_manager import TripManager
+from .trip_options import TripOptions
+from .trip_manager import TripManager
 
 class Controller:
     def __init__(self):
