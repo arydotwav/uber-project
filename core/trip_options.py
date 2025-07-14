@@ -16,7 +16,7 @@ class TripOptions:
         return {
             "Economy": 3500,
             "Fast": 6500,
-            "Confort": 12000
+            "Comfort": 12000
         }
  
 # trip1 = TripOptions()

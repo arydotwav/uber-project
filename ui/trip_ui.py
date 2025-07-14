@@ -108,16 +108,24 @@ class TripUi(Controller):
         for i, (option, price) in enumerate(prices.items()):
             print(f"{i+1}. {option}: ${price}")
 
-        price_choice = int(input("Choose a price option: "))
-        selected_price = list(prices.values())[price_choice - 1]
-        print(f"Selected price: ${selected_price}")
-        trip = Trip(pickup=pickup_address, dropoff=dropoff_address, address_book=self.trip_options.address_list, passenger=self.user, driver=None, price=selected_price)
-        confirmed_trip = self.confirm_trip(trip)
+        try:
+            price_choice = int(input("Choose a price option: "))
+            if price_choice < 1 or price_choice > len(prices):
+                print("Invalid option selected.")
+                return
 
-        if confirmed_trip:
-            self.follow = FollowUp(driver=confirmed_trip.driver)
-            self.follow.show_info()
+            selected_price = list(prices.values())[price_choice - 1]
+            print(f"Selected price: ${selected_price}")
 
+            trip = Trip(pickup=pickup_address, dropoff=dropoff_address, address_book=self.trip_options.address_list, passenger=self.user, driver=None, price=selected_price)
+            confirmed_trip = self.confirm_trip(trip)
+
+            if confirmed_trip:
+                self.follow = FollowUp(driver=confirmed_trip.driver)
+                self.follow.show_info()
+
+        except ValueError:
+            print("Please enter a valid number.")
 
     def start_trip(self):
         self.welcome()
