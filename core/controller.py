@@ -1,23 +1,22 @@
-import sys
-import os
+from .trip_options import TripOptions
+from .trip_manager import TripManager
+from ..auth.auth_manager import AuthManager
+from ..models.trip import Trip
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from core.trip_options import TripOptions
-from core.trip_manager import TripManager
 
 class Controller:
-    def __init__(self):
+    def __init__(self, auth_manager: AuthManager):
         self.trip_options = TripOptions()
-        self.trip_manager = TripManager() 
-        
+        self.trip_manager = TripManager(auth_manager)
+
     def get_addresses(self):
         return self.trip_options.get_addresses()
 
     def get_price_options(self):
         return self.trip_options.get_price_options()
 
-    def confirm_trip(self):
-        return self.trip_manager.confirm_trip() 
-    
-controller1 = Controller()
-print(controller1.confirm_trip())
+    def confirm_trip(self, trip: Trip):
+        return self.trip_manager.confirm_trip(trip)
+
+    def find_trip(self, driver):
+        return self.trip_manager.find_trip(driver)
