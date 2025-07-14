@@ -11,5 +11,5 @@ class Trip:
         print(self.address_book.check_address(self.pickup))
         print(self.address_book.check_address(self.dropoff))
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Trip from {self.pickup} to {self.dropoff}, Passenger: {self.passenger.name}, Driver: {self.driver.name}, Price: ${self.price:.2f}"

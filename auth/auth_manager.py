@@ -4,7 +4,7 @@ from typing import Optional, List, Union
 import re
 class AuthManager:
     def __init__(self):
-        self.passengers: List[Passenger] = [
+        self.passengers: list[Passenger] = [
             Passenger("alice", "1234", "alice@example.com"),
             Passenger("bob", "5678", "bob@example.com"),
         ]
