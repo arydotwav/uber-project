@@ -7,8 +7,16 @@ class Calification:
 
     
     def calificate(self):
-
-        self.calification = input("Califica tu viaje (1 a 5 estrellas)")
+        while True:
+            try:
+                rating = int(input("Rate your trip (1 to 5 stars): "))
+                if 1 <= rating <= 5:
+                    self.calification = rating
+                    break
+                else:
+                    print("Please enter a number between 1 and 5.")
+            except ValueError:
+                print("Invalid input. Please enter a number.")
 
         self.send_calification()
 
@@ -18,7 +26,7 @@ class Calification:
 
         time.sleep(0.5)
 
-        print(f"Viaje calificado con exito con {self.calification} estrellas")
+        print(f"Trip successfully rated with {self.calification} stars")
 
     
         

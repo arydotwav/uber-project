@@ -41,15 +41,25 @@ class TripUi(Controller):
 
                 if isinstance(self.user, Passenger):
                     driver = self.tm.confirm_trip()
-                    print(f"Your driver is {driver}  TRIPUI CLASS")
-                    # fix the infinite loop
                     self.follow = FollowUp(driver=driver)
                     self.follow.show_info()
                 elif isinstance(self.user, Driver):
                     show = input("(Driver) Do you want to show as active?\n(y/n): ")
                     if show.lower() == "y":
+                        # Integrate this in follow_up class
                         self.user.status = True
-                        self.tm.find_trip()
+                        passenger = self.tm.find_trip()
+                        if passenger:
+                            print(f"You have a trip with passenger: {passenger.name} ({passenger.email})")
+                            print("You are 5 minutes to your destination")
+                            time.sleep(1)
+                            print("Your are 2 minutes to your destination")
+                            time.sleep(1)
+                            print(f"You are at your destination")
+                            input("Press Enter to complete the trip...")
+                            print("Trip completed.")
+                        else:
+                            print("No passenger found at this time.")
                     else:
                         print("You will stay as inactive.")
 
