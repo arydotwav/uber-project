@@ -14,13 +14,13 @@ class TripUi(Controller):
         super().__init__(auth_manager)
         self.auth = auth_manager
         self.follow: FollowUp = None
+        self.trips_history = []  
         
     def welcome(self):
         print("----  Uber  ----")
         time.sleep(1)
         print("Welcome! Please log in!")
 
-    
     def login(self):
         while True:
             username = input("Username: ")
@@ -55,9 +55,6 @@ class TripUi(Controller):
             else:
                 print("You will remain inactive.")
                 break
-
-
-    
 
     def _passenger_flow(self):
         print("Your addresses:")
@@ -117,15 +114,37 @@ class TripUi(Controller):
             selected_price = list(prices.values())[price_choice - 1]
             print(f"Selected price: ${selected_price}")
 
-            trip = Trip(pickup=pickup_address, dropoff=dropoff_address, address_book=self.trip_options.address_list, passenger=self.user, driver=None, price=selected_price)
+            trip = Trip(
+                pickup=pickup_address,
+                dropoff=dropoff_address,
+                address_book=self.trip_options.address_list,
+                passenger=self.user,
+                driver=None,
+                price=selected_price
+            )
             confirmed_trip = self.confirm_trip(trip)
 
             if confirmed_trip:
                 self.follow = FollowUp(driver=confirmed_trip.driver)
                 self.follow.show_info()
-
+                self.trips_history.append({
+                    "pickup": confirmed_trip.pickup,
+                    "dropoff": confirmed_trip.dropoff,
+                    "price": confirmed_trip.price
+                })
         except ValueError:
             print("Please enter a valid number.")
+
+    def show_trips_history(self):
+        print("-- new section starts --")
+        print("trips history:")
+        total_spent = 0
+        for trip in self.trips_history:
+            print(f"Trip from {trip['pickup']} to {trip['dropoff']} with price {trip['price']}")
+            total_spent += trip['price'] 
+        print(f"Total trips: {len(self.trips_history)}")
+        print("-- new section ends --")
+        print(f"Total spen: ${total_spent}")
 
     def start_trip(self):
         self.welcome()
@@ -141,11 +160,12 @@ class TripUi(Controller):
             if logout_option == 'y':
                 self.auth.logout()
                 print("Closing the app.")
+                self.show_trips_history()
                 break
             else: 
                 print("You will stay logged in.")
                 another_session = input("Do you want to search for a new trip? (y/n): ").lower()
                 if another_session != 'y':
                     print("Closing the app.")
-                    break 
-
+                    self.show_trips_history()
+                    break
