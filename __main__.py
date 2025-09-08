@@ -1,5 +1,5 @@
-from .ui.trip_ui import TripUi
-from .auth.auth_manager import AuthManager
+from ui.trip_ui import TripUi
+from auth.auth_manager import AuthManager
 
 def main():
    auth_manager = AuthManager()

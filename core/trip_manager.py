@@ -1,9 +1,9 @@
 import random
 import time
 from typing import Optional, List, Union
-from ..auth.auth_manager import AuthManager
-from ..models.trip import Trip
-from ..auth.user import Driver
+from auth.auth_manager import AuthManager
+from models.trip import Trip
+from auth.user import Driver
 
 class TripManager:
     def __init__(self, auth_manager: AuthManager):
@@ -23,16 +23,29 @@ class TripManager:
     def find_trip(self, driver: Driver) -> Trip | None:
         print("🔄 Waiting for trips...")
         try:
-            if not self.pending_trips:
-                print("⏳ No trips yet. Waiting...")
-                time.sleep(2)
-                return None
-            
-            trip = self.pending_trips.pop(0)
-            trip.driver = driver
-            print(f"✅ Trip accepted for {trip.passenger.name} to {trip.dropoff}")
-            return trip
-            
+            while self.pending_trips:
+                trip = self.pending_trips.pop(0)
+                print("---------------------------------------------------------------")
+                print("🏁 New trip available. ")
+                print(f"  Passenger: {trip.passenger.name} ({trip.passenger.email})")
+                print(f"  Pickup: {trip.pickup}")
+                print(f"  Dropoff: {trip.dropoff}")
+                respuesta = input("  Will you take it? (y/n): ").strip().lower()
+                print("---------------------------------------------------------------")
+                if respuesta == 'y':
+                    trip.driver = driver
+                    print(f"✅ Trip accepted for {trip.passenger.name} to {trip.dropoff}")
+                    print(f"You have a trip with passenger: {trip.passenger.name} ({trip.passenger.email})")
+                    print(f"Pickup: {trip.pickup}")
+                    print(f"Dropoff: {trip.dropoff}")
+                    return trip
+                else:
+                    print("❌ Trip rejected. Searching for another trip...")
+                    self.pending_trips.append(trip)
+                    time.sleep(1)
+            print("⏳ No rides available. Waiting...")
+            time.sleep(2)
+            return None
         except KeyboardInterrupt:
             print("❌ Search cancelled by user.")
             return None
