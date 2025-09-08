@@ -1,4 +1,4 @@
-from ..models.addresses_list import AddressList
+from models.addresses_list import AddressList
 from typing import Optional
 class User:
     def __init__(self, name: str, telephone: int, email: str) -> None:

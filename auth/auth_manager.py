@@ -1,4 +1,4 @@
-from ..models.addresses_list import AddressList
+from models.addresses_list import AddressList
 from .user import Passenger, Driver
 from typing import Optional, List, Union
 import re
